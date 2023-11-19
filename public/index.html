@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Chat App</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #registration-container, #dashboard-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    input {
+      padding: 8px;
+      margin-bottom: 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    p {
+      color: #777;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="registration-container">
+    <h2>Registration</h2>
+    <form id="registrationForm" action="">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required />
+      <label for="password">Password:</label>
+      <input type="password" id="password" required />
+      <label for="apiKey">API Key:</label>
+      <input type="text" id="apiKey" required />
+      <button type="submit">Register</button>
+    </form>
+    <p id="registrationMessage"></p>
+  </div>
+
+  <div id="dashboard-container" style="display: none;">
+    <h2>Dashboard</h2>
+    <p id="welcomeMessage"></p>
+    <!-- Add more dashboard content as needed -->
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(function () {
+      const socket = io();
+
+      // Handle user registration form submission
+      $('#registrationForm').submit(function (event) {
+        event.preventDefault();
+
+        const userData = {
+          name: $('#name').val(),
+          password: $('#password').val(),
+          apiKey: $('#apiKey').val(),
+        };
+
+        // Emit the 'register' event with user data
+        socket.emit('register', userData);
+
+        // Clear the form
+        $('#name').val('');
+        $('#password').val('');
+        $('#apiKey').val('');
+      });
+
+      // Handle registration success
+      socket.on('registrationSuccess', function (message) {
+        $('#registrationMessage').text(message);
+        // Hide registration container
+        $('#registration-container').hide();
+        // Show dashboard container
+        $('#dashboard-container').show();
+      });
+
+      // Handle registration failure
+      socket.on('registrationFailed', function (message) {
+        $('#registrationMessage').text(message);
+      });
+
+      // Handle authentication success
+      socket.on('userData', function (userData) {
+        $('#welcomeMessage').text(`Welcome, ${userData.username}!`);
+      });
+
+      // ... (previous code) ...
+    });
+  </script>
+</body>
+</html>

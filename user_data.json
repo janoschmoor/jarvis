@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "username": "user1",
+    "password": "$2b$10$E1aPKzMFesIT2PVaEF0nruNRv8m/EQ6kx67wuCso1OvCwoUvL3FHu",
+    "apiKey": "api_key_1"
+  },
+  {
+    "id": 2,
+    "username": "test",
+    "password": "$2b$10$lWZnXWO57RRQyLbHtfwZyuOVWfK5nbm3vZ.r6aFVtHhUfa2VbvCtG",
+    "apiKey": "test",
+    "dashboardData": {}
+  }
+]
